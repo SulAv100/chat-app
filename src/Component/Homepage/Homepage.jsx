@@ -3,41 +3,53 @@ import "./Homepage.css";
 import ppImage from "../../assets/pp.png";
 
 function Homepage() {
-  const [messages, setMessages] = useState([]); 
-  const [currentMessage, setCurrentMessage] = useState(""); 
+  const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState("");
   const [sendFlag, setSendFlag] = useState(false);
   const [clickFlag, setClickFlag] = useState(false);
+  const [fetchData, setFetchData] = useState([]);
 
   const handleDataUpload = (event) => {
     const newData = event.target.value;
-    setCurrentMessage(newData); 
-    setSendFlag(newData.length > 1); 
+    setCurrentMessage(newData);
+    setSendFlag(newData.length > 1);
   };
 
   const handleDataUpdate = () => {
     if (currentMessage.trim()) {
-      setMessages([...messages, currentMessage]); 
-      setCurrentMessage(""); 
-      setSendFlag(false); 
-      setClickFlag(true); 
+      setMessages([...messages, currentMessage]);
+      setCurrentMessage("");
+      setSendFlag(false);
+      setClickFlag(true);
     }
   };
 
-  useEffect(  ()=>{
-    const fetchData = async ()=>{
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await fetch("http://127.0.0.1:8000/api/user/");
 
-    
-    const response = await fetch('http://127.0.0.1:8000/api/user/');
+  //     if (!response.ok) {
+  //     } else {
+  //       console.log(response.json());
+  //       return response.json();
 
-    if(!response.ok){
-      throw new Error ("Network resposne was not okay");
-    }else{
-      return response.json();
-    }
-    console.log(response.json());
-  }
+  //     }
+  //   };
 
-    fetchData();
+  //   fetchData();
+  // }, []);
+
+  useEffect(()=>{
+    const fetchData = fetch("http://127.0.0.1:8000/api/user/").then(response=>{
+      if(!response.ok){
+        throw new Error("Network resposne was not okay");
+      }else{
+            return response.json();
+          }
+      
+    }).then((data)=>{
+      setFetchData(data);
+    })
   },[])
 
   return (
@@ -70,56 +82,20 @@ function Homepage() {
             <input type="text" placeholder="Search Messages" />
           </div>
           <div className="messages-list">
-            <div className="single-message">
-              <span className="pp-image">
-                <img src={ppImage} alt="" />
-              </span>
-              <div className="user-outline">
-                <h3>Saurav Shrestha</h3>
-                <p>La diyo bhai</p>
+            {
+              fetchData.map((item)=>{
+                return <div className="single-message">
+                <span className="pp-image">
+                  <img src={ppImage} alt="" />
+                </span>
+                <div className="user-outline">
+                  <h3>{item.name}</h3>
+                  <p>{item.email}</p>
+                </div>
+                <p id="time">7min</p>
               </div>
-              <p id="time">7min</p>
-            </div>
-            <div className="single-message">
-              <span className="pp-image">
-                <img src={ppImage} alt="" />
-              </span>
-              <div className="user-outline">
-                <h3>Saurav Shrestha</h3>
-                <p>La diyo bhai</p>
-              </div>
-              <p id="time">7min</p>
-            </div>
-            <div className="single-message">
-              <span className="pp-image">
-                <img src={ppImage} alt="" />
-              </span>
-              <div className="user-outline">
-                <h3>Saurav Shrestha</h3>
-                <p>La diyo bhai</p>
-              </div>
-              <p id="time">7min</p>
-            </div>
-            <div className="single-message">
-              <span className="pp-image">
-                <img src={ppImage} alt="" />
-              </span>
-              <div className="user-outline">
-                <h3>Saurav Shrestha</h3>
-                <p>La diyo bhai</p>
-              </div>
-              <p id="time">7min</p>
-            </div>
-            <div className="single-message">
-              <span className="pp-image">
-                <img src={ppImage} alt="" />
-              </span>
-              <div className="user-outline">
-                <h3>Saurav Shrestha</h3>
-                <p>La diyo bhai</p>
-              </div>
-              <p id="time">7min</p>
-            </div>
+              })
+            }
           </div>
         </section>
         <main className="chat-area">
@@ -162,7 +138,10 @@ function Homepage() {
               <i className="fa-solid fa-face-smile"></i>
             </div>
             {sendFlag ? (
-              <i onClick={handleDataUpdate} className="fa-solid fa-arrow-right"></i>
+              <i
+                onClick={handleDataUpdate}
+                className="fa-solid fa-arrow-right"
+              ></i>
             ) : (
               <i className="fa-solid fa-car"></i>
             )}
