@@ -24,5 +24,7 @@ dist-ssr
 *.sw?
 
 
+
+
 #backend
 # chatAppBackend/env
