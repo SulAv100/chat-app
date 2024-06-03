@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Homepage.css";
 import ppImage from "../../assets/pp.png";
 
@@ -22,6 +22,23 @@ function Homepage() {
       setClickFlag(true); 
     }
   };
+
+  useEffect(  ()=>{
+    const fetchData = async ()=>{
+
+    
+    const response = await fetch('http://127.0.0.1:8000/api/user/');
+
+    if(!response.ok){
+      throw new Error ("Network resposne was not okay");
+    }else{
+      return response.json();
+    }
+    console.log(response.json());
+  }
+
+    fetchData();
+  },[])
 
   return (
     <>

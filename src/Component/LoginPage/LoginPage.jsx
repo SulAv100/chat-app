@@ -32,6 +32,7 @@ function LoginPage() {
           </div>
           <h3>Connect with your favorite people</h3>
           <form onSubmit={handleSubmit(handleSubmission)}>
+            {/* dont use arrow function if you have aded an layering function it  */}
             <div className="single-input">
               <input
                 type="text"
