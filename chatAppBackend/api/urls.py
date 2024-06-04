@@ -6,5 +6,9 @@ urlpatterns = [
     path('', apiHome),
     path('room/', RoomView.as_view()),
     path('user/', UserView.as_view()),
-    path('signup/', views.signupPage, name="signup")
+
+    path('signup/', views.signupPage, name="signup"),
+    path('login/', views.loginPage, name="login"),
+
+    
 ]

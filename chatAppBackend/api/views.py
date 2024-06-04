@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 def index(request):
     return HttpResponse("in index! go to api/....")
@@ -54,4 +55,15 @@ def signupPage(request):
 
 @api_view(['POST'])
 def loginPage(request):
-    pass
+    # return HttpResponse("here")
+    # return JsonResponse({'user': request.data})
+
+    # gives a 404 error if user not found
+    email = get_object_or_404(User, email = request.data['email'])
+
+    # check password
+    if not email.check_password(request.data['password']):
+        return Response({'detail':'wrong password'}, status = status.HTTP_404_NOT_FOUND)
+
+    return Response({"auth": "true"})
+
