@@ -57,8 +57,9 @@ function Homepage() {
 
 
 // this is for searching user to start a convo this takes input from search and filters the user name with the data we fetched from backend
-  const filteredData = fetchData.filter( //filter selects the exact data that matches the conditions
-    (item) => item.name.toLowerCase() === searchData.toLowerCase()
+//filter selects the exact data that matches the conditions
+  const filteredData = fetchData.filter( 
+    (item) => item.username.toLowerCase() === searchData.toLowerCase()
   );
 
 
@@ -122,7 +123,7 @@ function Homepage() {
                   </span>
                   <div className="user-outline">
                     {/* this is to extract the name and email from the filtered data */}
-                    <h3>{item.name}</h3>  
+                    <h3>{item.username}</h3>  
                     <p>{item.email}</p>
                   </div>
                   <p id="time">7min</p>
@@ -145,7 +146,7 @@ function Homepage() {
                   </span>
                   {/* this also changes automatically when we switch user to chat */}
                   {filteredData.map((item, index) => (
-                    <p>{item.name}</p>
+                    <p>{item.username}</p>
                   ))}
                 </div>
 
@@ -202,7 +203,7 @@ function Homepage() {
                 </figure>
                 {filteredData.map((item, index) => (
                   <p key={index} id="nameshit">
-                    {item.name}
+                    {item.username}
                   </p>
                 ))}
               </div>

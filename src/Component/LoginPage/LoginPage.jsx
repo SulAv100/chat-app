@@ -22,9 +22,25 @@ function LoginPage() {
     resolver: zodResolver(userScheme),
   });
 
+
+
   const handleSubmission = (formData) => {
     console.log("Form has been submitted");
-    navigate('/homepage');
+    const url = "http://127.0.0.1:8000/api/login/";
+
+    fetch(url,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(formData),
+    }).then((response)=>{
+      if(!response.ok){
+        throw new Error("Network response was not okay");
+      }else{
+        return response.json();
+      }
+    })
   };
 
 

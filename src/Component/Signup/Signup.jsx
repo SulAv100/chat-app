@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,6 +21,8 @@ function Signup() {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(signupScheme)
     });
+    
+   
 
     const handleSubmission = async (formData) => {
 
@@ -36,6 +38,7 @@ function Signup() {
             if (!response.ok) {
 
                 throw new Error("Network response was not okay");
+
             } else {
                 const data = await response.json();
                 console.log(data);
