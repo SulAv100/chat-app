@@ -4,12 +4,15 @@ import logo from "../../assets/react.svg";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const userScheme = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "At least 8 letters"),
   });
+  const navigate = useNavigate();
+
 
   const {
     register,
@@ -21,25 +24,26 @@ function LoginPage() {
 
   const handleSubmission = (formData) => {
     console.log("Form has been submitted");
+    navigate('/homepage');
   };
+
 
   return (
     <>
       <main className="login-body">
         <div className="login-container">
           <div className="logo-container">
-            <img src={logo} alt="" />
+            <img src={logo} alt="React Logo" />
           </div>
           <h3>Connect with your favorite people</h3>
           <form onSubmit={handleSubmit(handleSubmission)}>
-            {/* dont use arrow function if you have aded an layering function it  */}
             <div className="single-input">
               <input
                 type="text"
                 placeholder="Enter your email address"
                 {...register("email")}
               />
-              {errors.email && <span className="error" >{errors.email.message}</span>}
+              {errors.email && <span className="error">{errors.email.message}</span>}
             </div>
             <div className="single-input">
               <input
@@ -47,15 +51,15 @@ function LoginPage() {
                 placeholder="Enter your password"
                 {...register("password")}
               />
-              {errors.password && <span className="error" >{errors.password.message}</span>}
+              {errors.password && <span className="error">{errors.password.message}</span>}
             </div>
-
             <button type="submit">Continue</button>
           </form>
           <span id="check-box">
             <input type="checkbox" />
             Keep me signed in
           </span>
+          <span id="link-back">Don't have an account? <Link to='/signup'><b>Signup</b></Link></span>
         </div>
       </main>
       <footer>
@@ -67,7 +71,7 @@ function LoginPage() {
             <li>Terms</li>
             <li>Cookies Policies</li>
             <li>
-              <i class="fa-solid fa-circle-c"></i>Meta 2024
+              <i className="fa-solid fa-circle-c"></i>Meta 2024
             </li>
           </ul>
         </div>
