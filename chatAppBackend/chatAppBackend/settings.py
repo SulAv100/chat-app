@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'rest_framework',
 
-    'rest_framework.authtoken', # may not need it
+    'rest_framework.authtoken', # need it for register and login
 
     'corsheaders',
 

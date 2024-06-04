@@ -14,9 +14,10 @@ def unique_code_gen():
     return code
 
 class User(AbstractUser):
-
-    name = models.CharField(max_length=200, null=True)
+    
+    username = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255, null=False)
 
     # avatar = models.ImageField(null=True, default="avatar.svg")
 
