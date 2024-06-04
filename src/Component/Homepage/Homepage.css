@@ -102,6 +102,7 @@ aside {
 .single-message{
     display: flex;
     justify-content: space-between;
+    background-color: #efefef;
     align-items: center;
     padding: 0 5px 0 5px;
     border-radius: 10px;
