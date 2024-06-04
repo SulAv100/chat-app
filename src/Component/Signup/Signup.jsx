@@ -22,8 +22,21 @@ function Signup() {
         resolver: zodResolver(signupScheme)
     });
 
-    const handleSubmission = (formData) => {
-        console.log("This is form data", formData);
+    const handleSubmission = async (formData) => {
+        const url = "http://127.0.0.1:8000/api/auth/signup";
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not okay");
+        } else {
+            const data = await response.json();
+            console.log(data);
+        }
     };
 
     return (
