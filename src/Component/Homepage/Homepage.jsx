@@ -3,30 +3,43 @@ import "./Homepage.css";
 import ppImage from "../../assets/pp.png";
 
 function Homepage() {
-  const [messages, setMessages] = useState([]);
-  const [currentMessage, setCurrentMessage] = useState("");
-  const [sendFlag, setSendFlag] = useState(false);
-  // const [clickFlag, setClickFlag] = useState(false);
-  const [fetchData, setFetchData] = useState([]);
 
-  const [searchData, setSearchData] = useState("");
-  const [userclicked, setuserClicked] = useState(false);
 
+
+  //all the useStates are initialized here
+  const [messages, setMessages] = useState([]);//array
+  const [currentMessage, setCurrentMessage] = useState("");//var
+  const [sendFlag, setSendFlag] = useState(false);//boolean
+  const [fetchData, setFetchData] = useState([]);//array
+  const [searchData, setSearchData] = useState("");//var
+  const [userclicked, setuserClicked] = useState(false);//boolean
+
+
+
+  // this function handles the upload of messages to the currentMessage state
   const handleDataUpload = (event) => {
     const newData = event.target.value;
     setCurrentMessage(newData);
-    setSendFlag(newData.length > 1);
+    setSendFlag(newData.length > 1);//this checks if the length of word is greater than one or not else it wont upload the data
   };
 
+
+
+
+
+  // this is to push the data to messages state which is array  to the data we keept in currentMessage will be updated here
   const handleDataUpdate = () => {
     if (currentMessage.trim()) {
-      setMessages([...messages, currentMessage]);
-      setCurrentMessage("");
+      setMessages([...messages, currentMessage]); //as we are using spread operator here this will make a copy of previous data and add new data 
+      setCurrentMessage("");//to empty the currentMessage so that use can message again
       setSendFlag(false);
       setClickFlag(true);
     }
   };
 
+
+
+  // this shows the fetching of users from backend to show the users who have logged in and to start the conversation
   useEffect(() => {
     const fetchData = fetch("http://127.0.0.1:8000/api/user/")
       .then((response) => {
@@ -39,18 +52,25 @@ function Homepage() {
       .then((data) => {
         setFetchData(data);
       });
-  }, []);
+  }, []);//empty array dependency so it will run only once when the component is mounted 
 
-  const filteredData = fetchData.filter(
+
+
+// this is for searching user to start a convo this takes input from search and filters the user name with the data we fetched from backend
+  const filteredData = fetchData.filter( //filter selects the exact data that matches the conditions
     (item) => item.name.toLowerCase() === searchData.toLowerCase()
   );
 
+
+
+
+// this is for the search user we give the name here which is then compared with the array above 
   const handleChatSwitch = (event) => {
     const newData = event.target.value;
     setSearchData(event.target.value);
 
     if (newData.length < 1) {
-      setuserClicked(false);
+      setuserClicked(false); //to ensure that the length of the searched item is less than 1 then we simmply disable the flag so that all other chats are also stopped from rendering
     }
   };
 
@@ -89,6 +109,7 @@ function Homepage() {
             />
           </div>
           <div className="messages-list">
+            {/* the data that we filtered previously is mapped using this so as we have single item we  we can map it and each parent container should have unique key which is given below */}
             {filteredData ? (
               filteredData.map((item, index) => (
                 <div
@@ -100,17 +121,20 @@ function Homepage() {
                     <img src={ppImage} alt="" />
                   </span>
                   <div className="user-outline">
-                    <h3>{item.name}</h3>
+                    {/* this is to extract the name and email from the filtered data */}
+                    <h3>{item.name}</h3>  
                     <p>{item.email}</p>
                   </div>
                   <p id="time">7min</p>
                 </div>
               ))
             ) : (
+              // need work on this this isnt working as expected
               <span>No result found</span>
             )}
           </div>
         </section>
+        {/* this is to start convo with the user that we searched and selected more updates need to be donw */}
         {userclicked && filteredData ? (
           <>
             <main className="chat-area">
@@ -119,6 +143,7 @@ function Homepage() {
                   <span className="pp-image">
                     <img src={ppImage} alt="" />
                   </span>
+                  {/* this also changes automatically when we switch user to chat */}
                   {filteredData.map((item, index) => (
                     <p>{item.name}</p>
                   ))}
@@ -217,3 +242,6 @@ function Homepage() {
 }
 
 export default Homepage;
+
+
+// code minification and code splitting will be done at last
