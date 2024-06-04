@@ -50,3 +50,8 @@ def signupPage(request):
     # return HttpResponse("not valid")
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def loginPage(request):
+    pass
