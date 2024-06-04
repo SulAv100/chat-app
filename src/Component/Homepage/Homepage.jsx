@@ -9,6 +9,9 @@ function Homepage() {
   const [clickFlag, setClickFlag] = useState(false);
   const [fetchData, setFetchData] = useState([]);
 
+  const [searchData, setSearchData] = useState('');
+  
+
   const handleDataUpload = (event) => {
     const newData = event.target.value;
     setCurrentMessage(newData);
@@ -24,20 +27,6 @@ function Homepage() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch("http://127.0.0.1:8000/api/user/");
-
-  //     if (!response.ok) {
-  //     } else {
-  //       console.log(response.json());
-  //       return response.json();
-
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   useEffect(()=>{
     const fetchData = fetch("http://127.0.0.1:8000/api/user/").then(response=>{
@@ -50,7 +39,9 @@ function Homepage() {
     }).then((data)=>{
       setFetchData(data);
     })
-  },[])
+  },[]);
+
+  const filteredData = fetchData.filter((item)=> item.name.toLowerCase() === searchData.toLowerCase());
 
   return (
     <>
@@ -79,22 +70,24 @@ function Homepage() {
           </div>
           <div className="search-bar">
             <i className="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search Messages" />
+            <input type="text" placeholder="Search Messages" value={searchData}  onChange={(event)=>setSearchData(event.target.value)} />
           </div>
           <div className="messages-list">
             {
-              fetchData.map((item)=>{
-                return <div className="single-message">
-                <span className="pp-image">
-                  <img src={ppImage} alt="" />
-                </span>
-                <div className="user-outline">
-                  <h3>{item.name}</h3>
-                  <p>{item.email}</p>
-                </div>
-                <p id="time">7min</p>
-              </div>
-              })
+              filteredData.map((item,index)=>(
+                
+                   <div key={index} className="single-message">
+                  <span className="pp-image">
+                    <img src={ppImage} alt="" />
+                  </span>
+                  <div className="user-outline">
+                    <h3>{item.name}</h3>
+                    <p>{item.email}</p>
+                  </div>
+                  <p id="time">7min</p>
+                </div> 
+                
+              ))
             }
           </div>
         </section>
@@ -102,9 +95,9 @@ function Homepage() {
           <div className="chat-heading">
             <div className="chat-member">
               <span className="pp-image">
-                <img src={ppImage} alt="" />
+                <img src={ppImage} alt=""/>
               </span>
-              <p>Saurav Shrestha</p>
+              <p>Saurav</p>
             </div>
 
             <div className="interactables">
