@@ -64,7 +64,7 @@ def loginPage(request):
 
     # check password
     if not email.check_password(request.data['password']):
-        return JsonResponse({'detail':'wrong password'}, status = status.HTTP_404_NOT_FOUND)
+        return Response({'detail':'wrong password'}, status = status.HTTP_404_NOT_FOUND)
 
-    return JsonResponse({"auth": "true"})
+    return Response({"auth": "true"})
 

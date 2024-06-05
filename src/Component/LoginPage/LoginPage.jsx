@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./LoginPage.css";
 import logo from "../../assets/react.svg";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from 'react-router-dom';
 
 function LoginPage() {
+
+
+  const [authData, setAuthData]  = useState();
+  const [detail, setDetail] = useState();
+  const items = {
+    email: 'gautamnirdesh752@gmail.com',
+    password: 'wearepeople'
+  };
+
+
+
+  
+  // useEffect(() => {
+  //   const url = 'http://127.0.0.1:8000/api/login/';
+  //   fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(items)
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => console.log(data))
+  //   .catch(error => console.error('Error:', error));
+  // }, []);
+
+
   const userScheme = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "At least 8 letters"),
@@ -25,27 +52,35 @@ function LoginPage() {
 
 
   const handleSubmission = (formData) => {
-    console.log("Form has been submitted");
-    const url = "http://127.0.0.1:8000/api/login/";
-
-    fetch(url,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
+    const url = 'http://127.0.0.1:8000/api/login/';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData),
-    }).then((response)=>{
-      if(!response.ok){
-        throw new Error("Network response was not okay");
-      }else{
-        return response.json();
-      }
+      body: JSON.stringify(formData)
     })
-  };
+    .then(response => response.json())
+    .then(data =>{ setAuthData(data.auth); setDetail(data.detail);}
+
+      )
+    .catch(error => console.error('Error:', error));
+
+    if(authData){
+      
+      navigate('/homepage');
+    }else{
+      
+    }
+    }
+  
 
 
   return (
     <>
+    {
+      authData?<span></span>:<span style={{}}>{detail}</span>
+    }
       <main className="login-body">
         <div className="login-container">
           <div className="logo-container">
