@@ -46,11 +46,11 @@ def signupPage(request):
         # return JsonResponse({'user' : request.data}) 
 
         # returns the entered and saved data to frontend in json format
-        return Response({'user':serializer.data})
+        return JsonResponse({'user':serializer.data})
     
     # return HttpResponse("not valid")
     
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -59,11 +59,12 @@ def loginPage(request):
     # return JsonResponse({'user': request.data})
 
     # gives a 404 error if user not found
+    ## which is stored in key-value pair array with "detail": "No User matches the given query."
     email = get_object_or_404(User, email = request.data['email'])
 
     # check password
     if not email.check_password(request.data['password']):
-        return Response({'detail':'wrong password'}, status = status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'detail':'wrong password'}, status = status.HTTP_404_NOT_FOUND)
 
-    return Response({"auth": "true"})
+    return JsonResponse({"auth": "true"})
 
